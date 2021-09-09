@@ -1,5 +1,7 @@
 package com.springsecuritydemo.securitydemo.security;
 
+import com.springsecuritydemo.securitydemo.security.data.service.AuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,25 +22,29 @@ import static com.springsecuritydemo.securitydemo.security.UserRole.*;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class MySecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    private final AuthService authService;
 
     @Override
     @Bean
     protected UserDetailsService userDetailsService() {
-        UserDetails sepehr =
-                User.builder().username("sepehr")
-                .password(passwordEncoder().encode("12345"))
-                        .roles(USER.name())
-                        .build();
-
-        UserDetails maryam =
-                User.builder().username("maryam")
-                        .password(passwordEncoder().encode("12345"))
-//                        .roles(ADMIN.name())
-                        .authorities(ADMIN.getGrantedAuthority())
-                        .build();
-
-        return new InMemoryUserDetailsManager(sepehr, maryam);
+//        UserDetails sepehr =
+//                User.builder().username("sepehr")
+//                .password(passwordEncoder().encode("12345"))
+//                        .roles(USER.name())
+//                        .build();
+//
+//        UserDetails maryam =
+//                User.builder().username("maryam")
+//                        .password(passwordEncoder().encode("12345"))
+////                        .roles(ADMIN.name())
+//                        .authorities(ADMIN.getGrantedAuthority())
+//                        .build();
+//
+//        return new InMemoryUserDetailsManager(sepehr, maryam);
+        return authService;
     }
 
     @Override
