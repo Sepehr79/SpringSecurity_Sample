@@ -13,13 +13,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.springsecuritydemo.securitydemo.security.Permission.*;
 import static com.springsecuritydemo.securitydemo.security.UserRole.*;
 
 @Configuration
 @EnableWebSecurity
 public class MySecurityConfiguration extends WebSecurityConfigurerAdapter {
-
 
     @Override
     @Bean
@@ -43,19 +44,20 @@ public class MySecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+//                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/students").hasAuthority(ADMIN_WRITE.getName())
                 .antMatchers("/api/students").hasAnyRole(ADMIN.name(), USER.name())
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin().permitAll()
+                .defaultSuccessUrl("/api", true)
                 .and()
                 .logout().permitAll()
                 .and()
-                .httpBasic();
+                .rememberMe().tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(31));
+
     }
 
     @Bean
