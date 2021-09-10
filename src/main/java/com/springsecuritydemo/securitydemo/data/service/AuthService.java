@@ -1,7 +1,8 @@
-package com.springsecuritydemo.securitydemo.security.data.service;
+package com.springsecuritydemo.securitydemo.data.service;
 
-import com.springsecuritydemo.securitydemo.security.data.repo.AuthorityRepo;
-import com.springsecuritydemo.securitydemo.security.data.repo.UserRepo;
+import com.springsecuritydemo.securitydemo.data.entity.User;
+import com.springsecuritydemo.securitydemo.data.repo.AuthorityRepo;
+import com.springsecuritydemo.securitydemo.data.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,5 +19,9 @@ public class AuthService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepo.getByUserName(username);
+    }
+
+    public User saveUser(User user){
+        return userRepo.save(user);
     }
 }

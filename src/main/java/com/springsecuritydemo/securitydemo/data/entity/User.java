@@ -1,4 +1,4 @@
-package com.springsecuritydemo.securitydemo.security.data.entity;
+package com.springsecuritydemo.securitydemo.data.entity;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 
 @Setter
 @NoArgsConstructor
@@ -13,9 +14,11 @@ import java.util.Collection;
 public class User implements UserDetails {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER,
+            cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     private Collection<Authority> authorities;
 
     @Column(name = "user_name", unique = true)
@@ -83,5 +86,11 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public void addAuthority(Authority authority){
+        if (authorities == null)
+            authorities = new HashSet<>();
+        authorities.add(authority);
     }
 }

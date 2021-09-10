@@ -1,4 +1,4 @@
-package com.springsecuritydemo.securitydemo.entity;
+package com.springsecuritydemo.securitydemo.data.pojo;
 
 public class Student {
 

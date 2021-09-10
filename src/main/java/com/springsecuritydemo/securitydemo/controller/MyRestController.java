@@ -1,6 +1,6 @@
 package com.springsecuritydemo.securitydemo.controller;
 
-import com.springsecuritydemo.securitydemo.entity.Student;
+import com.springsecuritydemo.securitydemo.data.pojo.Student;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.springsecuritydemo.securitydemo.security.data.entity;
+package com.springsecuritydemo.securitydemo.data.entity;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,9 +13,9 @@ import javax.persistence.*;
 public class Authority implements GrantedAuthority {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NonNull
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user")
     private User user;

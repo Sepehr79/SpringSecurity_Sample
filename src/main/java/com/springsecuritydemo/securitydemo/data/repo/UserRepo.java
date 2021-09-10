@@ -1,6 +1,6 @@
-package com.springsecuritydemo.securitydemo.security.data.repo;
+package com.springsecuritydemo.securitydemo.data.repo;
 
-import com.springsecuritydemo.securitydemo.security.data.entity.User;
+import com.springsecuritydemo.securitydemo.data.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
