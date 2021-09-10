@@ -1,28 +1,18 @@
 package com.springsecuritydemo.securitydemo.security;
 
-import com.springsecuritydemo.securitydemo.data.entity.Authority;
 import com.springsecuritydemo.securitydemo.data.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AnonymousAuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
 import static com.springsecuritydemo.securitydemo.security.Permission.*;
@@ -76,14 +66,8 @@ public class MySecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(authService);
-        authProvider.setPasswordEncoder(new PasswordEncoder() {
+        // No encoding password
+        return new PasswordEncoder() {
             @Override
             public String encode(CharSequence charSequence) {
                 return charSequence.toString();
@@ -93,7 +77,14 @@ public class MySecurityConfiguration extends WebSecurityConfigurerAdapter {
             public boolean matches(CharSequence charSequence, String s) {
                 return charSequence.toString().equals(s);
             }
-        });
+        };
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(authService);
+        authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 }
